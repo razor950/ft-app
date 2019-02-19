@@ -1,7 +1,7 @@
 {
-  "name": "8basetut",
+  "name": "ft-app frontend",
   "version": "0.1",
-  "description": "boilerpoint using nextjs and 8base",
+  "description": "boilerpoint using nextjs for foodtruck app",
   "main": "index.js",
   "license": "MIT",
   "dependencies": {

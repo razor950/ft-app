@@ -10,16 +10,75 @@ import AppBarComponent from '../component/AppBar';
 class MyApp extends App {
   constructor() {
     super();
+    this.state = {
+      currentUser: null,
+      isAuthenticated: false,
+      isLoading: false
+    }
+    this.handleLogout = this.handleLogout.bind(this);
+    this.loadCurrentUser = this.loadCurrentUser.bind(this);
+    this.handleLogin = this.handleLogin.bind(this);
+
     this.pageContext = getPageContext();
+    
+  }
+  
+  loadCurrentUser() {
+    this.setState({
+      isLoading: true
+    });
+    getCurrentUser()
+    .then(response => {
+      this.setState({
+        currentUser: response,
+        isAuthenticated: true,
+        isLoading: false
+      });
+    }).catch(error => {
+      this.setState({
+        isLoading: false
+      });  
+    });
   }
 
   componentDidMount() {
+    this.loadCurrentUser();
+  }
+
+
+  componentDidMount() {
+    this.loadCurrentUser();
     // Remove the server-side injected CSS.
     const jssStyles = document.querySelector('#jss-server-side');
     if (jssStyles && jssStyles.parentNode) {
       jssStyles.parentNode.removeChild(jssStyles);
     }
   }
+
+  handleLogin() {
+      notification.success({
+        message: '#FindMyFood',
+        description: "You're successfully logged in.",
+      });
+      this.loadCurrentUser();
+      this.props.history.push("/");
+  }
+
+  handleLogout(redirectTo="/", notificationType="success", description="You're successfully logged out.") {
+    localStorage.removeItem(ACCESS_TOKEN);
+
+    this.setState({
+      currentUser: null,
+      isAuthenticated: false
+    });
+
+    this.props.history.push(redirectTo);
+    
+    notification[notificationType]({
+      message: '#FindMyFood',
+      description: description,
+    });
+}
 
   render() {
     const { Component, pageProps } = this.props;

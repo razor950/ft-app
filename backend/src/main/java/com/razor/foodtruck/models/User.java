@@ -49,6 +49,12 @@ public class User {
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles = new HashSet<>();
 
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "user_ft",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "foodtruck_id"))
+    private Set<Foodtruck> favoriteFT = new HashSet<>();
+
     public User(String name, String username, String email, String password) {
         this.name = name;
         this.username = username;
@@ -63,4 +69,8 @@ public class User {
     public void setRoles(Set<Role> roles) {
         this.roles = roles;
     }
+
+    public Set<Foodtruck> getFoodTrucks() { return favoriteFT; }
+
+    public void setFoodTrucks(Set<Role> roles) { this.favoriteFT = favoriteFT; }
 }
