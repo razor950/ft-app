@@ -12,7 +12,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 
 @Data // getter / setters for all
 @NoArgsConstructor
@@ -26,17 +25,20 @@ public class Foodtruck {
     private Long id;
 
     @NaturalId
-    @NotNull
+    @NotBlank
     private String name;
 
-    @NotNull
-    private String address; // note: google markers take in lat and lng
-
-    private Integer rating;
+    @NotBlank
+    private String address;
 
     private Boolean status;
 
+    private Integer rating;
 
-//    private float latitude;
-//    private float longitude;
+    public Foodtruck(String name, String address, Boolean status, Integer rating){
+        this.name = name;
+        this.address = address;
+        this.status = status;
+        this.rating = rating;
+    }
 }

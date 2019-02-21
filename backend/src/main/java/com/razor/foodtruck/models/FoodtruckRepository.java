@@ -10,4 +10,6 @@ public interface FoodtruckRepository extends JpaRepository<Foodtruck, Long> {
 
     Optional<Foodtruck> findByName(String name);
     //Optional<Foodtruck> findByEmail(String email);
+
+    Boolean existsByName(String name);
 }

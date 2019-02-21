@@ -25,8 +25,7 @@ public class UserController {
     @GetMapping("/user/me")
     @PreAuthorize("hasRole('USER')")
     public UserResponse getCurrentUser(@CurrentUser UserPrincipal currentUser) {
-        UserResponse userResponse = new UserResponse(currentUser.getId(), currentUser.getUsername(), currentUser.getName());
-        return userResponse;
+        return new UserResponse(currentUser.getId(), currentUser.getUsername(), currentUser.getName());
     }
 
     @GetMapping("/user/checkUsernameAvailability")
@@ -46,20 +45,25 @@ public class UserController {
         User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new ResourceNotFoundException("User", "username", username));
 
-        UserProfile userProfile = new UserProfile(user.getId(), user.getUsername(), user.getName(), user.getEmail());
+        return new UserProfile(user.getId(), user.getUsername(), user.getName(), user.getEmail());
+    }
 
-        return userProfile;
+    @GetMapping("users/favorites/")
+    public UserResponse getUserFavorites(@CurrentUser UserPrincipal currentUser){
+        UserResponse userResponse = getCurrentUser(currentUser);
+
+        Set<Foodtruck> foodtruckList = userResponse.getFoodtrucks();
+
+        return new UserResponse(foodtruckList);
     }
 
     @GetMapping("/users/favorites/{username}")
-    public UserResponse getUserFavorites(@PathVariable(value = "username") String username){
+    public UserResponse getOtherUserFavorites(@PathVariable(value = "username") String username){
         User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new ResourceNotFoundException("User", "username", username));
 
         Set<Foodtruck> foodtruckList = user.getFoodTrucks();
 
-        UserResponse userFavorites = new UserResponse(foodtruckList);
-
-        return userFavorites;
+        return new UserResponse(foodtruckList);
     }
 }

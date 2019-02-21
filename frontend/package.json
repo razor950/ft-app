@@ -1,5 +1,5 @@
 {
-  "name": "ft-app frontend",
+  "name": "ftapp",
   "version": "0.1",
   "description": "boilerpoint using nextjs for foodtruck app",
   "main": "index.js",
