@@ -17,7 +17,6 @@ public class Role {
     private RoleTypes name;
 
     public Role() {
-
     }
 
     public Role(RoleTypes name) {

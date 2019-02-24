@@ -5,7 +5,6 @@ import com.razor.foodtruck.models.Foodtruck;
 import com.razor.foodtruck.models.User;
 import com.razor.foodtruck.models.UserRepository;
 import com.razor.foodtruck.requests.UserAvailability;
-import com.razor.foodtruck.requests.UserProfile;
 import com.razor.foodtruck.requests.UserResponse;
 import com.razor.foodtruck.security.CurrentUser;
 import com.razor.foodtruck.security.UserPrincipal;
@@ -22,12 +21,6 @@ public class UserController {
     @Autowired
     private UserRepository userRepository;
 
-    @GetMapping("/user/me")
-    @PreAuthorize("hasRole('USER')")
-    public UserResponse getCurrentUser(@CurrentUser UserPrincipal currentUser) {
-        return new UserResponse(currentUser.getId(), currentUser.getUsername(), currentUser.getName());
-    }
-
     @GetMapping("/user/checkUsernameAvailability")
     public UserAvailability checkUsernameAvailability(@RequestParam(value = "username") String username) {
         Boolean isAvailable = !userRepository.existsByUsername(username);
@@ -40,27 +33,35 @@ public class UserController {
         return new UserAvailability(isAvailable);
     }
 
-    @GetMapping("/users/{username}")
-    public UserProfile getUserProfile(@PathVariable(value = "username") String username) {
-        User user = userRepository.findByUsername(username)
-                .orElseThrow(() -> new ResourceNotFoundException("User", "username", username));
+    @GetMapping("/users/me")
+    @PreAuthorize("hasRole('USER')")
+    public UserResponse getCurrentUser(@CurrentUser UserPrincipal currentUser) {
+        return new UserResponse(currentUser.getId(), currentUser.getUsername(), currentUser.getName(), currentUser.getEmail());
+    }
 
-        return new UserProfile(user.getId(), user.getUsername(), user.getName(), user.getEmail());
+    @GetMapping("/users/{id}")
+    public UserResponse getUserProfile(@PathVariable(value = "id") Long id) {
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Id", "id", id));
+
+        return new UserResponse(user.getId(), user.getUsername(), user.getName(), user.getEmail());
     }
 
     @GetMapping("users/favorites/")
     public UserResponse getUserFavorites(@CurrentUser UserPrincipal currentUser){
-        UserResponse userResponse = getCurrentUser(currentUser);
+        Long currentUserId = currentUser.getId();
+        User user = userRepository.findById(currentUserId)
+                .orElseThrow(() -> new ResourceNotFoundException("Id", "id", currentUserId));
 
-        Set<Foodtruck> foodtruckList = userResponse.getFoodtrucks();
+        Set<Foodtruck> foodtruckList = user.getFoodTrucks();
 
         return new UserResponse(foodtruckList);
     }
 
-    @GetMapping("/users/favorites/{username}")
-    public UserResponse getOtherUserFavorites(@PathVariable(value = "username") String username){
-        User user = userRepository.findByUsername(username)
-                .orElseThrow(() -> new ResourceNotFoundException("User", "username", username));
+    @GetMapping("/users/favorites/{id}")
+    public UserResponse getOtherUserFavorites(@PathVariable(value = "id") Long id){
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Id", "id", id));
 
         Set<Foodtruck> foodtruckList = user.getFoodTrucks();
 

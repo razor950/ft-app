@@ -1,13 +1,16 @@
 package com.razor.foodtruck.requests;
 
 import com.razor.foodtruck.models.Foodtruck;
+import lombok.Data;
 
 import java.util.Set;
 
+@Data
 public class UserResponse {
     private Long id;
     private String username;
     private String name;
+    private String email;
     private Set<Foodtruck> foodtrucks;
 
     public UserResponse(Long id, String username, String name) {
@@ -16,39 +19,14 @@ public class UserResponse {
         this.name = name;
     }
 
-    public UserResponse(Set<Foodtruck> foodtrucks){
-        this.foodtrucks = foodtrucks;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
+    public UserResponse(Long id, String username, String name, String email) {
         this.id = id;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
         this.username = username;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
         this.name = name;
+        this.email = email;
     }
 
-    public Set<Foodtruck> getFoodtrucks() {
-        return foodtrucks;
-    }
-
-    public void setFoodtrucks(Set<Foodtruck> foodtrucks) {
+    public UserResponse(Set<Foodtruck> foodtrucks){
         this.foodtrucks = foodtrucks;
     }
 }

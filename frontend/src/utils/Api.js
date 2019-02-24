@@ -33,7 +33,7 @@ export function login(loginRequest) {
 
 export function signup(signupRequest) {
     return request({
-        url: API_BASE_URL + "/auth/signup",
+        url: API_BASE_URL + "/auth/register",
         method: 'POST',
         body: JSON.stringify(signupRequest)
     });
@@ -59,15 +59,85 @@ export function getCurrentUser() {
     }
 
     return request({
-        url: API_BASE_URL + "/user/me",
+        url: API_BASE_URL + "/users/me",
         method: 'GET'
     });
 }
 
-export function getUserProfile(username) {
+export function getUserProfile(id) {
+    if(!localStorage.getItem(ACCESS_TOKEN)) {
+        return Promise.reject("No access token set.");
+    }
+
     return request({
-        url: API_BASE_URL + "/users/" + username,
+        url: API_BASE_URL + "/users/" + id,
         method: 'GET'
     });
 }
 
+export function getUserFavorites() {
+    if(!localStorage.getItem(ACCESS_TOKEN)) {
+        return Promise.reject("No access token set.");
+    }
+
+    return request({
+        url: API_BASE_URL + "/users/favorites",
+        method: 'GET'
+    });
+}
+
+export function getOtherUserFavorites(id) {
+    if(!localStorage.getItem(ACCESS_TOKEN)) {
+        return Promise.reject("No access token set.");
+    }
+
+    return request({
+        url: API_BASE_URL + "/users/favorites/" + id,
+        method: 'GET'
+    });
+}
+
+export function getFoodtrucks() {
+    if(!localStorage.getItem(ACCESS_TOKEN)) {
+        return Promise.reject("No access token set.");
+    }
+
+    return request({
+        url: API_BASE_URL + "/foodtrucks",
+        method: 'GET'
+    });
+}
+
+export function getFoodtruck(id) {
+    if(!localStorage.getItem(ACCESS_TOKEN)) {
+        return Promise.reject("No access token set.");
+    }
+
+    return request({
+        url: API_BASE_URL + "/foodtrucks/" + id,
+        method: 'GET'
+    });
+}
+
+export function addFoodtruck(foodtruckRequest) {
+    if(!localStorage.getItem(ACCESS_TOKEN)) {
+        return Promise.reject("No access token set.");
+    }
+
+    return request({
+        url: API_BASE_URL + "/foodtrucks/add/",
+        method: 'POST',
+        body: JSON.stringify(foodtruckRequest)
+    });
+}
+
+export function deleteFoodtruck(id) {
+    if(!localStorage.getItem(ACCESS_TOKEN)) {
+        return Promise.reject("No access token set.");
+    }
+
+    return request({
+        url: API_BASE_URL + "/foodtrucks/delete/" + id,
+        method: 'DELETE'
+    });
+}

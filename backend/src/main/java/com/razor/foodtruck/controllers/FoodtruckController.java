@@ -52,7 +52,7 @@ public class FoodtruckController {
         return ResponseEntity.created(location).body(new ApiResponse(true, "Foodtruck successfully added!"));
     }
 
-    @PostMapping("foodtrucks/delete/{id}")
+    @DeleteMapping("foodtrucks/delete/{id}")
     @PreAuthorize("hasRole('OWNER')")
     public String deleteFoodtruck(@PathVariable(value = "id") Long id) {
         Foodtruck foodtruck = foodtruckRepository.findById(id)
@@ -69,10 +69,5 @@ public class FoodtruckController {
                 .orElseThrow(() -> new ResourceNotFoundException("Foodtruck", "id", id));
 
         return new Foodtruck(foodtruck.getName(), foodtruck.getAddress(), foodtruck.getStatus(), foodtruck.getRating());
-    }
-
-    @GetMapping("foodtrucks/{name}")
-    public Optional<Foodtruck> show(@PathVariable String name){
-        return foodtruckRepository.findByName(name);
     }
 }
