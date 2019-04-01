@@ -1,6 +1,7 @@
 package com.razor.foodtruck.requests;
 
 import com.razor.foodtruck.models.Foodtruck;
+import com.razor.foodtruck.models.Friend;
 import lombok.Data;
 
 import java.util.Set;
@@ -12,6 +13,7 @@ public class UserResponse {
     private String name;
     private String email;
     private Set<Foodtruck> foodtrucks;
+    private Set<Friend> friends;
 
     public UserResponse(Long id, String username, String name) {
         this.id = id;
@@ -26,7 +28,7 @@ public class UserResponse {
         this.email = email;
     }
 
-    public UserResponse(Set<Foodtruck> foodtrucks){
-        this.foodtrucks = foodtrucks;
-    }
+    public UserResponse(Set<Foodtruck> foodtrucks){ this.foodtrucks = foodtrucks; }
+
+    public void setFriends(Set<Friend> friends) { this.friends = friends; }
 }

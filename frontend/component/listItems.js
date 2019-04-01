@@ -7,19 +7,19 @@ import FavoriteIcon from '@material-ui/icons/Favorite';
 import MapIcon from '@material-ui/icons/Map';
 import ProfileIcon from '@material-ui/icons/Face';
 import FriendIcon from '@material-ui/icons/Person';
-import Link from 'next/link'
+import Link from 'next/link';
 
 export const mainListItems = (
   <div>
-        <List>
-        <Link href="/">
+       <List>
+        <Link href="/"> 
           <ListItem button>
             <ListItemIcon>
               <MapIcon />
             </ListItemIcon>
             <ListItemText primary="Map" />
           </ListItem>
-        </Link>
+        </Link> 
         <Link href="/favorites">
           <ListItem button>
             <ListItemIcon>
@@ -44,7 +44,7 @@ export const mainListItems = (
             <ListItemText primary="Profile" />
           </ListItem>
          </Link>
-        </List>
+       </List>
   </div>
 );
 

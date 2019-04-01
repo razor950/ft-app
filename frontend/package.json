@@ -9,17 +9,24 @@
     "@material-ui/icons": "^3.0.2",
     "axios": "^0.18.0",
     "google-maps-react": "^2.0.2",
+    "js-cookie": "^2.2.0",
     "jss": "^9.8.7",
     "material-ui-search-bar": "^1.0.0-beta.13",
     "next": "^8.0.0",
+    "next-redux-wrapper": "^3.0.0-alpha.2",
     "react": "^16.8.1",
     "react-dom": "^16.8.1",
     "react-jss": "^8.6.1",
-    "react-router-dom": "^4.3.1"
+    "react-redux": "^6.0.1",
+    "react-router-dom": "^4.3.1",
+    "redux": "^4.0.1",
+    "redux-thunk": "^2.3.0"
   },
   "scripts": {
     "dev": "next",
     "build": "next build",
     "start": "next start"
+  },
+  "devDependencies": {
   }
 }

@@ -1,13 +1,13 @@
 import React from 'react';
 import Button from '@material-ui/core/Button';
-import TextField from '@material-ui/core/TextField';
 import Input from '@material-ui/core/Input';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import { signup, checkUsernameAvailability, checkEmailAvailability } from '../src/utils/Api';
+import { connect } from 'react-redux';
+import actions from '../redux/actions';
+import initialize from '../src/utils/initialize';
 import { 
   NAME_MIN_LENGTH, NAME_MAX_LENGTH, 
   USERNAME_MIN_LENGTH, USERNAME_MAX_LENGTH,
@@ -15,22 +15,17 @@ import {
   PASSWORD_MIN_LENGTH, PASSWORD_MAX_LENGTH
 } from '../src/utils/constants';
 
-export default class SignUpDialog extends React.Component {
-    state = {
-        open: false,
-        name: {
-          value: ''
-        },
-        username: {
-            value: ''
-        },
-        email: {
-            value: ''
-        },
-        password: {
-            value: ''
-      }
-    };
+class SignUpDialog extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            open: false,
+            name: '',
+            username: '',
+            email: '',
+            password: ''
+        };
+    }
 
   handleClickOpen = () => {
     this.setState({ open: true });
@@ -54,28 +49,21 @@ export default class SignUpDialog extends React.Component {
       });
   };
 
+
+  static getInitialProps(ctx) {
+    initialize(ctx);
+  }
+
   handleSubmit = (event) => {
       event.preventDefault();
-
-      const signupRequest = {
-          name: this.state.name.value,
-          email: this.state.email.value,
-          username: this.state.username.value,
-          password: this.state.password.value
-      };
-      signup(signupRequest)
-      .then(response => {
-          notification.success({
-              message: '#Fed',
-              description: "Thank you! You're successfully registered. Please Login to continue!",
-          });          
-          this.props.history.push("/index");
-      }).catch(error => {
-          notification.error({
-              message: '#Fed',
-              description: error.message || 'Sorry! Something went wrong. Please try again!'
-          });
-      });
+  
+      this.props.registered ({ 
+                name: this.state.name.value, 
+                email: this.state.email.value,
+                username: this.state.username.value,
+                password: this.state.password.value },
+                'register'
+          );
   };
 
 
@@ -232,3 +220,8 @@ export default class SignUpDialog extends React.Component {
     }
 }
 }
+
+export default connect(
+    state => state,
+    actions
+  )(SignUpDialog);

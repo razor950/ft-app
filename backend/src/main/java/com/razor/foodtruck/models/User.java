@@ -9,6 +9,7 @@ import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Data
@@ -55,6 +56,13 @@ public class User {
             inverseJoinColumns = @JoinColumn(name = "foodtruck_id"))
     private Set<Foodtruck> favoriteFT = new HashSet<>();
 
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "user_friend",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "friend_id"))
+    private Set<Friend> userFriend = new HashSet<>();
+
+
     public User(String name, String username, String email, String password) {
         this.name = name;
         this.username = username;
@@ -72,5 +80,9 @@ public class User {
 
     public Set<Foodtruck> getFoodTrucks() { return favoriteFT; }
 
-    public void setFoodTrucks(Set<Role> roles) { this.favoriteFT = favoriteFT; }
+    public void setFoodTrucks(Set<Foodtruck> favoriteFT) { this.favoriteFT = favoriteFT; }
+
+    public Set<Friend> getFriends() { return userFriend; }
+
+    public void setFriends(Set<Friend> userFriend) { this.userFriend = userFriend; }
 }

@@ -7,7 +7,9 @@ const style = {
 }
 
 export class MapContainer extends React.Component {
-  state = { userLocation: { lat: 32, lng: 32 }, loading: true };
+  state = { userLocation: { lat: 32, lng: 32 }, userLocation2: { lat: 32, lng: 32 }, userLocation3: { lat: 32, lng: 32 }, 
+  userLocation4: { lat: 32, lng: 32 }, loading: true };
+
 
   componentDidMount(props) {
     window.addEventListener('resize', this.setMapCenter);
@@ -18,6 +20,9 @@ export class MapContainer extends React.Component {
 
         this.setState({
           userLocation: { lat: latitude, lng: longitude },
+          userLocation2: { lat: latitude+0.3, lng: longitude },
+          userLocation3: { lat: latitude, lng: longitude+0.4 },
+          userLocation4: { lat: latitude+0.2, lng: longitude+0.2 },
           loading: false
         });
       },
@@ -47,7 +52,7 @@ export class MapContainer extends React.Component {
   };
 
   render() {
-    const { loading, userLocation } = this.state;
+    const { loading, userLocation, userLocation2, userLocation3, userLocation4 } = this.state;
     const { google } = this.props;
 
     if (loading) {
@@ -61,6 +66,24 @@ export class MapContainer extends React.Component {
       name={'User Position'}
       onClick={this.onMarkerClick}
       position={userLocation}
+      icon={{
+        url: '../static/gmapsicon.png',
+        anchor: new google.maps.Point(32,32),
+        scaledSize: new google.maps.Size(32,32)
+      }} />
+      <Marker
+      name={'Brians Taco'}
+      onClick={this.onMarkerClick}
+      position={userLocation2}
+      icon={{
+        url: '../static/gmapsicon.png',
+        anchor: new google.maps.Point(32,32),
+        scaledSize: new google.maps.Size(32,32)
+      }} />
+            <Marker
+      name={'Sushi Runner'}
+      onClick={this.onMarkerClick}
+      position={userLocation3}
       icon={{
         url: '../static/gmapsicon.png',
         anchor: new google.maps.Point(32,32),

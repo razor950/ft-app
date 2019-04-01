@@ -1,4 +1,7 @@
 import React from 'react';
+import { connect } from 'react-redux';
+import actions from '../redux/actions';
+import initialize from '../src/utils/initialize';
 import Button from '@material-ui/core/Button'
 import IconButton from '@material-ui/core/IconButton';
 import TextField from '@material-ui/core/TextField';
@@ -9,13 +12,21 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import SignUpDialog from './Signup';
-import login from '../src/utils/Api';
 
 
-export default class LoginDialog extends React.Component {
-  state = {
-    open: false,
-  };
+class LoginDialog extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      open: false,
+      usernameOrEmail: '',
+      password: ''
+    };
+  }
+
+  static getInitialProps(ctx) {
+    initialize(ctx);
+}
 
   handleClickOpen = () => {
     this.setState({ open: true });
@@ -24,6 +35,17 @@ export default class LoginDialog extends React.Component {
   handleClose = () => {
     this.setState({ open: false });
   };
+
+  handleSubmit = (event) => {
+    event.preventDefault();
+
+    this.props.authenticate(
+      { usernameOrEmail: this.state.usernameOrEmail, password: this.state.password},
+      'login'
+    );
+};
+
+
 
   render() {
     return (
@@ -45,6 +67,8 @@ export default class LoginDialog extends React.Component {
               id="usernameOrEmail"
               label="Username or Email"
               type="username"
+              value={this.state.usernameOrEmail}
+              onChange={e => this.setState({ usernameOrEmail: e.target.value })}
               fullWidth
             />
             <TextField
@@ -52,6 +76,8 @@ export default class LoginDialog extends React.Component {
               id="password"
               label="Password"
               type="password"
+              value={this.state.password}
+              onChange={e => this.setState({ password: e.target.value })}
               fullWidth
             />
           </DialogContent>
@@ -66,3 +92,8 @@ export default class LoginDialog extends React.Component {
     );
   }
 }
+
+export default connect(
+  state => state,
+  actions
+)(LoginDialog);

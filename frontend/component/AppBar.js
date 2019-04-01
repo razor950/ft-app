@@ -17,6 +17,7 @@ import NotificationsIcon from '@material-ui/icons/Notifications';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import LoginDialog from '../component/Login';
 import mainListItems from './listItems';
+import { MapContainer } from './Map';
 
 
 const drawerWidth = 240;
@@ -101,7 +102,7 @@ const styles = theme => ({
 class AppBarComponent extends React.Component {
   state = {
     open: true,
-    clicked: false,
+    clicked: false
   };
 
   handleDrawerOpen = () => {
@@ -145,7 +146,7 @@ class AppBarComponent extends React.Component {
               noWrap
               className={classes.title}
             >
-              Foodtruck
+              #FindMyFood
             </Typography>
             <LoginDialog />
           </Toolbar>

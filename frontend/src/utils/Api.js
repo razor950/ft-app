@@ -1,143 +1,58 @@
-import { API_BASE_URL, ACCESS_TOKEN } from './constants';
+import { API_BASE_URL } from './constants';
+import axios from "axios";
+import { getCookieFromBrowser } from '../utils/cookie';
 
-const request = (options) => {
-    const headers = new Headers({
-        'Content-Type': 'application/json',
-    })
+   export default axios.create({
+            withCredentials: true, // pass cookies to cross-site api
+        });
     
-    if(localStorage.getItem(ACCESS_TOKEN)) {
-        headers.append('Authorization', 'Bearer ' + localStorage.getItem(ACCESS_TOKEN))
+
+    export function checkUsernameAvailability(username) {
+        let url = API_BASE_URL + "/user/checkUsernameAvailability?username=" + username;
+        return this.client.get(url).then(reply => {return reply.data});
     }
 
-    const defaults = {headers: headers};
-    options = Object.assign({}, defaults, options);
-
-    return fetch(options.url, options)
-    .then(response => 
-        response.json().then(json => {
-            if(!response.ok) {
-                return Promise.reject(json);
-            }
-            return json;
-        })
-    );
-};
-
-export function login(loginRequest) {
-    return request({
-        url: API_BASE_URL + "/auth/login",
-        method: 'POST',
-        body: JSON.stringify(loginRequest)
-    });
-}
-
-export function signup(signupRequest) {
-    return request({
-        url: API_BASE_URL + "/auth/register",
-        method: 'POST',
-        body: JSON.stringify(signupRequest)
-    });
-}
-
-export function checkUsernameAvailability(username) {
-    return request({
-        url: API_BASE_URL + "/user/checkUsernameAvailability?username=" + username,
-        method: 'GET'
-    });
-}
-
-export function checkEmailAvailability(email) {
-    return request({
-        url: API_BASE_URL + "/user/checkEmailAvailability?email=" + email,
-        method: 'GET'
-    });
-}
-
-export function getCurrentUser() {
-    if(!localStorage.getItem(ACCESS_TOKEN)) {
-        return Promise.reject("No access token set.");
+    function checkEmailAvailability(email) {
+        let url = API_BASE_URL + "/user/checkEmailAvailability?email=" + email;
+        return this.client.get(url).then(reply => {return reply.data});
     }
 
-    return request({
-        url: API_BASE_URL + "/users/me",
-        method: 'GET'
-    });
-}
-
-export function getUserProfile(id) {
-    if(!localStorage.getItem(ACCESS_TOKEN)) {
-        return Promise.reject("No access token set.");
+    export function getCurrentUser() {
+        let url = API_BASE_URL + "/users/me";
+        return axios.get(url).then(reply => {return reply.data});
     }
 
-    return request({
-        url: API_BASE_URL + "/users/" + id,
-        method: 'GET'
-    });
-}
-
-export function getUserFavorites() {
-    if(!localStorage.getItem(ACCESS_TOKEN)) {
-        return Promise.reject("No access token set.");
+    function getUserProfile(id) {
+        let url = API_BASE_URL + "/users/" + id;
+        return this.client.get(url).then(reply => {return reply.data});
     }
 
-    return request({
-        url: API_BASE_URL + "/users/favorites",
-        method: 'GET'
-    });
-}
-
-export function getOtherUserFavorites(id) {
-    if(!localStorage.getItem(ACCESS_TOKEN)) {
-        return Promise.reject("No access token set.");
+    export function getUserFavorites() {
+        let url = API_BASE_URL + "/users/favorites/";
+        return axios.get(url).then(reply => {return reply.data});
     }
 
-    return request({
-        url: API_BASE_URL + "/users/favorites/" + id,
-        method: 'GET'
-    });
-}
-
-export function getFoodtrucks() {
-    if(!localStorage.getItem(ACCESS_TOKEN)) {
-        return Promise.reject("No access token set.");
+    function getOtherUserFavorites(id) {
+        let url = API_BASE_URL + "/users/favorites/" + id;
+        return this.client.get(url).then(reply => {return reply.data});
     }
 
-    return request({
-        url: API_BASE_URL + "/foodtrucks",
-        method: 'GET'
-    });
-}
-
-export function getFoodtruck(id) {
-    if(!localStorage.getItem(ACCESS_TOKEN)) {
-        return Promise.reject("No access token set.");
+    function getFoodtrucks() {
+        let url = API_BASE_URL + "/foodtrucks";
+        return this.client.get(url).then(reply => {return reply.data});
     }
 
-    return request({
-        url: API_BASE_URL + "/foodtrucks/" + id,
-        method: 'GET'
-    });
-}
-
-export function addFoodtruck(foodtruckRequest) {
-    if(!localStorage.getItem(ACCESS_TOKEN)) {
-        return Promise.reject("No access token set.");
+    function getFoodtruck(id) {
+        let url = API_BASE_URL + "/foodtrucks/" + id;
+        return this.client.get(url).then(reply => {return reply.data})
     }
 
-    return request({
-        url: API_BASE_URL + "/foodtrucks/add/",
-        method: 'POST',
-        body: JSON.stringify(foodtruckRequest)
-    });
-}
-
-export function deleteFoodtruck(id) {
-    if(!localStorage.getItem(ACCESS_TOKEN)) {
-        return Promise.reject("No access token set.");
+    function addFoodtruck(foodtruckRequest) {
+        let url = API_BASE_URL + "/foodtrucls/add/";
+        return this.client.post(JSON.stringify(foodtruckRequest));
     }
 
-    return request({
-        url: API_BASE_URL + "/foodtrucks/delete/" + id,
-        method: 'DELETE'
-    });
-}
+    function deleteFoodtruck(id) {
+        let url = API_BASE_URL + "/foodtrucks/delete" + id;
+        return this.client.delete(url);
+    }

@@ -15,9 +15,11 @@ import Link from 'next/link';
 
 const styles = theme => ({
   root: {
-    display: 'inline-block',
+    display: 'flex',
     textAlign: 'center',
-    paddingTop: theme.spacing.unit * 20,
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center'
   },
   card: {
     display: 'inline-block',
@@ -29,7 +31,7 @@ function Friends(props) {
   const { classes } = props;
 
   return (
-    <div>
+    <div className={classes.root}>
     <Card className={classes.card}>
       <CardActionArea>
         <CardMedia
@@ -37,10 +39,10 @@ function Friends(props) {
         />
         <CardContent>
           <Typography gutterBottom variant="h5" component="h2">
-            Test Card
+            Friends
           </Typography>
           <Typography component="p">
-            User Profile Information
+            FRIENDS HERE!
           </Typography>
         </CardContent>
       </CardActionArea>

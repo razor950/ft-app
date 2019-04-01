@@ -1,5 +1,5 @@
 export const API_BASE_URL = 'http://localhost:5000/api';
-export const ACCESS_TOKEN = 'accessToken';
+export const ACCESS_TOKEN = 'ACCESS_TOKEN';
 
 export const NAME_MIN_LENGTH = 4;
 export const NAME_MAX_LENGTH = 40;
